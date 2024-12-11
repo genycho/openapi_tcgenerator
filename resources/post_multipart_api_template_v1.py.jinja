@@ -1,0 +1,28 @@
+#-*- coding: utf-8 -*-
+""" 
+{{ tc_list[0].testfile_declaration }}
+"""
+import os, sys, io
+import requests
+from requests import Request, Session
+import pytest
+import json, time
+from common import api_test_util as util
+from common.exceptions import APITestException
+{% set this_component = tc_list[0].project_str %}from {{ this_component }} import {{ this_component }}_constants as constants
+from {{ this_component }} import {{ this_component }}_util
+# this_apipath = ({{tc_list[0].method.upper()}}){{tc_list[0].path}}
+{% for a_tc in tc_list %}
+{%- if a_tc.test_pytestmarker_str != "" %}{{a_tc.test_pytestmarker_str}}{%- endif %}
+def test_post_{{a_tc.test_declartion_str}}:
+    """ {{ a_tc.testmethod_declaration }} """
+{% if a_tc.path_params_set_str != "" %}    {{a_tc.path_params_set_str}}{%- endif %}
+    headers = { {{ a_tc.header_str }} }
+    form_params ={{a_tc.formparms_str}}
+{% if a_tc.multipart_file_str != "" %}    {{a_tc.multipart_file_str}}{% else %}    files = {}{%- endif %}
+    response = {{a_tc.request_str}}, files=files, data=form_params, headers=headers)
+{% for a_assert in a_tc.assert_str_list %}    {{ a_assert }}{%- endfor %}
+
+{% endfor %}
+
+실행됐다

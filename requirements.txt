@@ -1,0 +1,9 @@
+requests>=2.25.1
+pandas
+pytest
+pytest-html
+unittest-xml-reporting
+pytest-cov
+openpyxl
+
+python-dotenv
