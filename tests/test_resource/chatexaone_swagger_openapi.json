@@ -1,0 +1,2219 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/auth/istokenvalid": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Is Token Valid",
+                "description": "get access token through exaone labs at first time",
+                "operationId": "is_token_valid_auth_istokenvalid_get",
+                "parameters": [
+                    {
+                        "name": "tempToken",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "title": "Temptoken"
+                        }
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpToken"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh Token",
+                "operationId": "refresh_token_auth_refresh_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "ipaddress",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Ipaddress"
+                        }
+                    },
+                    {
+                        "name": "access_token",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Access Token"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/RqRefresh"
+                                    }
+                                ],
+                                "title": "Data"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpToken"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout",
+                "operationId": "logout_auth_logout_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    },
+                    {
+                        "name": "access_token",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Access Token"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login",
+                "operationId": "login_auth_login_post",
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/RqLogin"
+                                    }
+                                ],
+                                "title": "Userinfo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpToken"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/user-info": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get User Info",
+                "description": "return user information - name, email",
+                "operationId": "get_user_info_auth_user_info_get",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpUserInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/question": {
+            "post": {
+                "tags": [
+                    "question"
+                ],
+                "summary": "Post Question",
+                "description": "Request question",
+                "operationId": "post_question_api_question_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/RqPostQuestion"
+                                    }
+                                ],
+                                "title": "Data"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpPostQuestion"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/answer": {
+            "post": {
+                "tags": [
+                    "question"
+                ],
+                "summary": "Post Answer",
+                "description": "question api",
+                "operationId": "post_answer_api_answer_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "description": "question id",
+                            "title": "Question Id"
+                        },
+                        "description": "question id"
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpAnswer"
+                                }
+                            }
+                        }
+                    },
+                    "5002": {
+                        "description": "GATEWAY_INVALID_RESULT"
+                    },
+                    "5003": {
+                        "description": "GATEWAY_INTERNAL_ERROR"
+                    },
+                    "5004": {
+                        "description": "GATEWAY_CONNECTION_FAIL"
+                    },
+                    "5005": {
+                        "description": "GATEWAY_BUSY_MIN_TIMEOUT"
+                    },
+                    "5006": {
+                        "description": "GATEWAY_BUSY_MAX_TIMEOUT"
+                    },
+                    "5030": {
+                        "description": "DUPLICATE_ANSWERS_REQUEST"
+                    },
+                    "5040": {
+                        "description": "FILE_ACCESS_FAILED"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "question"
+                ],
+                "summary": "Get Saved Answer",
+                "description": "answer api",
+                "operationId": "get_saved_answer_api_answer_get",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "description": "question id",
+                            "title": "Question Id"
+                        },
+                        "description": "question id"
+                    },
+                    {
+                        "name": "streaming",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean",
+                            "description": "streaming",
+                            "title": "Streaming"
+                        },
+                        "description": "streaming"
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpAnswer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/question/{q_id}": {
+            "delete": {
+                "tags": [
+                    "question"
+                ],
+                "summary": "Del Question",
+                "description": "delete request by id",
+                "operationId": "del_question_api_question__q_id__delete",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "q_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Q Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/q-list-count": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Get List Questions",
+                "description": "return list and count of questions order by date(latest)",
+                "operationId": "get_list_questions_api_q_list_count_get",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "days",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "description": "latest days of history",
+                            "default": 7,
+                            "title": "Days"
+                        },
+                        "description": "latest days of history"
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/q-history-by-date": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Get List Questions Paginated",
+                "description": "return q-list for specific date",
+                "operationId": "get_list_questions_paginated_api_q_history_by_date_get",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "format is YYYY-mm-dd. Example) '2023-01-01'",
+                            "title": "Start"
+                        },
+                        "description": "format is YYYY-mm-dd. Example) '2023-01-01'"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "format is YYYY-mm-dd. Example) '2023-01-01'",
+                            "title": "End"
+                        },
+                        "description": "format is YYYY-mm-dd. Example) '2023-01-01'"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "default": 1,
+                            "title": "Page"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "default": 10,
+                            "title": "Size"
+                        }
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/answers": {
+            "get": {
+                "tags": [
+                    "History",
+                    "History"
+                ],
+                "summary": "Get Answers All",
+                "description": "return list of answers of question by id",
+                "operationId": "get_answers_all_api_answers_get",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpAnswers"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/questions": {
+            "patch": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Patch Feedback",
+                "description": "Update for feedback. This API MUST use for feedback only.",
+                "operationId": "patch_feedback_api_questions_patch",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Rqfeedback"
+                                    }
+                                ],
+                                "title": "Feedback"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpAnswer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Get List Questions Paginated",
+                "description": "return q-list for specific date",
+                "operationId": "get_list_questions_paginated_api_questions_get",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "start_q_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "latest or actual q_id",
+                            "title": "Start Q Id"
+                        },
+                        "description": "latest or actual q_id"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "description": "number of questions",
+                            "title": "Size"
+                        },
+                        "description": "number of questions"
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/preview/{f_id}": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Resp Preview",
+                "description": "Response file preview by f_id",
+                "operationId": "resp_preview_api_preview__f_id__get",
+                "deprecated": true,
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "f_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "F Id"
+                        }
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpFileInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/files": {
+            "post": {
+                "tags": [
+                    "files"
+                ],
+                "summary": "Upload Files",
+                "description": "upload files",
+                "operationId": "upload_files_files_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "upsert",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "description": "upsert",
+                            "default": true,
+                            "title": "Upsert"
+                        },
+                        "description": "upsert"
+                    },
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Body_upload_files_files_post"
+                                    }
+                                ],
+                                "title": "Body"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CeBaseModel"
+                                }
+                            }
+                        }
+                    },
+                    "6011": {
+                        "description": "file type is not supported"
+                    },
+                    "6012": {
+                        "description": "too large size"
+                    },
+                    "6013": {
+                        "description": "duplicate file"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/files/list": {
+            "post": {
+                "tags": [
+                    "files"
+                ],
+                "summary": "Get File Candidates",
+                "description": "문서 검색에 사용 가능한 file list",
+                "operationId": "get_file_candidates_files_list_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/RqPostFilesList"
+                                    }
+                                ],
+                                "title": "Data"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RpFileLists-Input"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/report/feedback": {
+            "post": {
+                "tags": [
+                    "report"
+                ],
+                "summary": "Feedback Log",
+                "description": "feedback by user",
+                "operationId": "feedback_log_report_feedback_post",
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "x-request-id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Request-Id"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Email"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/RqReport"
+                                    }
+                                ],
+                                "title": "Rq Report"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/version/mlops": {
+            "get": {
+                "tags": [
+                    "version"
+                ],
+                "summary": "Get Mlops Version",
+                "description": "version information in model",
+                "operationId": "get_mlops_version_version_mlops_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ]
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "main"
+                ],
+                "summary": "Home",
+                "operationId": "home__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ping": {
+            "get": {
+                "tags": [
+                    "main"
+                ],
+                "summary": "Ping",
+                "operationId": "ping_ping_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Body_upload_files_files_post": {
+                "properties": {
+                    "files": {
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "type": "array",
+                        "title": "Files",
+                        "description": "Attach any files"
+                    }
+                },
+                "type": "object",
+                "title": "Body_upload_files_files_post"
+            },
+            "CeBaseModel": {
+                "properties": {
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    }
+                },
+                "type": "object",
+                "title": "CeBaseModel"
+            },
+            "FilePreview": {
+                "properties": {
+                    "index": {
+                        "type": "integer",
+                        "title": "Index"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "Url"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "index"
+                ],
+                "title": "FilePreview"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "RpAnswer": {
+                "properties": {
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    },
+                    "q_id": {
+                        "type": "integer",
+                        "title": "Question id",
+                        "description": "Unique question ID"
+                    },
+                    "question": {
+                        "type": "string",
+                        "title": "Question_text",
+                        "description": "User input question"
+                    },
+                    "template_name": {
+                        "type": "string",
+                        "title": "Template name",
+                        "description": "Pre-defined template for FE representation"
+                    },
+                    "main_paragraph": {
+                        "type": "string",
+                        "title": "Main Paragraph",
+                        "description": "Abstract"
+                    },
+                    "sub_paragraph": {
+                        "items": {},
+                        "type": "array",
+                        "title": "Sub Paragraph",
+                        "description": "Set of sub paragraphs"
+                    },
+                    "feedback": {
+                        "type": "string",
+                        "title": "User feedback",
+                        "description": "+1 like, -1 dislike, 0 moderate"
+                    },
+                    "date": {
+                        "type": "string",
+                        "title": "created date",
+                        "description": "created date"
+                    },
+                    "f_id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "file_id",
+                        "description": "unique file id if file is exists"
+                    },
+                    "file_name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "file_name",
+                        "description": "Uploaded file name from user"
+                    },
+                    "file_size": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "file_size",
+                        "description": "File size string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "q_id",
+                    "question",
+                    "template_name",
+                    "main_paragraph",
+                    "sub_paragraph",
+                    "feedback",
+                    "date",
+                    "f_id",
+                    "file_name",
+                    "file_size"
+                ],
+                "title": "RpAnswer"
+            },
+            "RpAnswers": {
+                "properties": {
+                    "items": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/RpAnswer"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "list of answer",
+                        "description": "Return answers"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "title": "Total"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "title": "Page"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "title": "Size"
+                    },
+                    "pages": {
+                        "type": "integer",
+                        "title": "Pages"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "items",
+                    "total",
+                    "page",
+                    "size",
+                    "pages"
+                ],
+                "title": "RpAnswers"
+            },
+            "RpFileInfo": {
+                "properties": {
+                    "f_id": {
+                        "type": "integer",
+                        "title": "F Id"
+                    },
+                    "file_name": {
+                        "type": "string",
+                        "title": "File Name"
+                    },
+                    "preview": {
+                        "items": {
+                            "$ref": "#/components/schemas/FilePreview"
+                        },
+                        "type": "array",
+                        "title": "Preview"
+                    },
+                    "file_size": {
+                        "type": "string",
+                        "title": "File Size"
+                    },
+                    "create_date": {
+                        "type": "string",
+                        "title": "Create Date"
+                    },
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "f_id",
+                    "preview",
+                    "file_size"
+                ],
+                "title": "RpFileInfo"
+            },
+            "RpFileLists-Input": {
+                "properties": {
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    },
+                    "files": {
+                        "items": {
+                            "$ref": "#/components/schemas/SingleFile"
+                        },
+                        "type": "array",
+                        "title": "Files"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "files"
+                ],
+                "title": "RpFileLists"
+            },
+            "RpFileLists-Output": {
+                "properties": {
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    },
+                    "files": {
+                        "items": {
+                            "$ref": "#/components/schemas/SingleFile"
+                        },
+                        "type": "array",
+                        "title": "Files"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "files"
+                ],
+                "title": "RpFileLists"
+            },
+            "RpPostQuestion": {
+                "properties": {
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    },
+                    "date": {
+                        "type": "string",
+                        "title": "created_date"
+                    },
+                    "q_id": {
+                        "type": "integer",
+                        "title": "question id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "date",
+                    "q_id"
+                ],
+                "title": "RpPostQuestion"
+            },
+            "RpToken": {
+                "properties": {
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    },
+                    "accessToken": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "access token",
+                        "description": "Use this token if request all of api"
+                    },
+                    "user_info": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/UserInfo"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "User information",
+                        "description": "It contains email, name"
+                    },
+                    "refreshToken": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "refresh token",
+                        "description": "Use this token if access token is expired"
+                    },
+                    "tempToken": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "temp token",
+                        "description": "Use this token in redirection"
+                    }
+                },
+                "type": "object",
+                "title": "RpToken"
+            },
+            "RpUserInfo": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "title": "user email"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "user name"
+                    },
+                    "result_code": {
+                        "type": "integer",
+                        "title": "result code",
+                        "default": 200
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "description"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "name"
+                ],
+                "title": "RpUserInfo"
+            },
+            "RqLogin": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "user email",
+                        "description": "id(email) for login request"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "title": "password",
+                        "description": "password for login request",
+                        "writeOnly": true
+                    },
+                    "redirect": {
+                        "type": "boolean",
+                        "title": "redirect",
+                        "description": "if true return temp token, unless return access token",
+                        "default": true
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "title": "RqLogin"
+            },
+            "RqPostFilesList": {
+                "properties": {
+                    "file_list": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "title": "File List"
+                    }
+                },
+                "type": "object",
+                "title": "RqPostFilesList"
+            },
+            "RqPostQuestion": {
+                "properties": {
+                    "file_list": {
+                        "items": {
+                            "type": "integer"
+                        },
+                        "type": "array",
+                        "title": "File List"
+                    },
+                    "question": {
+                        "type": "string",
+                        "title": "Question",
+                        "description": "question"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "question"
+                ],
+                "title": "RqPostQuestion"
+            },
+            "RqRefresh": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "title": "email",
+                        "description": "user"
+                    },
+                    "refreshToken": {
+                        "type": "string",
+                        "title": "Refresh token",
+                        "description": "refresh token"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "refreshToken"
+                ],
+                "title": "RqRefresh"
+            },
+            "RqReport": {
+                "properties": {
+                    "q_id": {
+                        "type": "integer",
+                        "title": "Q Id"
+                    },
+                    "feedback": {
+                        "type": "string",
+                        "title": "Feedback"
+                    },
+                    "tags": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Tags"
+                    },
+                    "comment": {
+                        "type": "string",
+                        "title": "Comment"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "q_id",
+                    "feedback",
+                    "tags",
+                    "comment"
+                ],
+                "title": "RqReport"
+            },
+            "Rqfeedback": {
+                "properties": {
+                    "q_id": {
+                        "type": "integer",
+                        "title": "question id"
+                    },
+                    "feedback": {
+                        "type": "string",
+                        "title": "Feedback item id",
+                        "description": "Pre-defined items - +1: good, -1: not good",
+                        "default": "0"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "q_id"
+                ],
+                "title": "Rqfeedback"
+            },
+            "SingleFile": {
+                "properties": {
+                    "f_id": {
+                        "type": "integer",
+                        "title": "F Id"
+                    },
+                    "file_name": {
+                        "type": "string",
+                        "title": "File Name"
+                    },
+                    "preview": {
+                        "items": {
+                            "$ref": "#/components/schemas/FilePreview"
+                        },
+                        "type": "array",
+                        "title": "Preview"
+                    },
+                    "file_size": {
+                        "type": "string",
+                        "title": "File Size"
+                    },
+                    "create_date": {
+                        "type": "string",
+                        "title": "Create Date"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "f_id",
+                    "preview",
+                    "file_size"
+                ],
+                "title": "SingleFile"
+            },
+            "UserInfo": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "title": "user email"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "user name"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "name"
+                ],
+                "title": "UserInfo"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        },
+        "securitySchemes": {
+            "HTTPBearer": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

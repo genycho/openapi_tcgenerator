@@ -1,0 +1,604 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "api_portal",
+        "description": "Portal API를 위한 Backend Docs - 20240911 v0.1",
+        "contact": {
+            "name": "LG AIResearch - AI Platform",
+            "email": "chanwoo.moon@lgresearch.ai"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://labs.lgair.net/apiportal/api/_",
+            "description": "dev server"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "in": "hearder",
+                "name": "Authorization",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/apikey/create": {
+            "post": {
+                "summary": "apikey 추가",
+                "description": "apikey 추가(max 30)",
+                "tags": [
+                    "apikey"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "my_key"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "create successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "api_key": "api_key..."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/apikey/list": {
+            "get": {
+                "summary": "apikey 리스트",
+                "description": "apikey 리스트",
+                "tags": [
+                    "apikey"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료"
+                    },
+                    "400": {
+                        "description": "비정상 종료"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/apikey/update": {
+            "put": {
+                "summary": "apikey 수정",
+                "description": "apikey 수정",
+                "tags": [
+                    "apikey"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "my_key"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/apikey/delete": {
+            "delete": {
+                "summary": "apikey 삭제",
+                "description": "apikey 삭제",
+                "tags": [
+                    "apikey"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/signon": {
+            "post": {
+                "summary": "signon",
+                "description": "signon",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "tempToken": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "sign-on successfully"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "422": {
+                        "description": "error message of DB"
+                    },
+                    "424": {
+                        "description": "You need to verify your inbox!"
+                    }
+                }
+            }
+        },
+        "/auth/signoff": {
+            "post": {
+                "summary": "signoff",
+                "description": "signoff",
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "sign-off successfully"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/whoami": {
+            "get": {
+                "summary": "(session) get user_info",
+                "description": "get user_info",
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/common/health": {
+            "get": {
+                "summary": "get health",
+                "description": "health check",
+                "tags": [
+                    "common"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "object",
+                                            "example": {
+                                                "code": "0000",
+                                                "message": "success"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/common/queueTest": {
+            "post": {
+                "summary": "queueTest(not working)",
+                "description": "queueTest",
+                "tags": [
+                    "common"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "object",
+                                            "example": {
+                                                "code": "0000",
+                                                "message": "success"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/files": {
+            "post": {
+                "summary": "Upload Files",
+                "description": "upload files",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-api-key",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "file"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/files/list": {
+            "post": {
+                "summary": "List Files",
+                "description": "Get File Candidates",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-api-key",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file_list": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "file_list": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Email"
+                    }
+                }
+            }
+        },
+        "/v1/files/{id}": {
+            "delete": {
+                "summary": "Delete File",
+                "description": "Delete a file by its ID",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "oneOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-api-key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted the file.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "File deleted successfully."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters."
+                    },
+                    "404": {
+                        "description": "File not found."
+                    }
+                }
+            }
+        },
+        "/v1/files/chat": {
+            "post": {
+                "summary": "Post Files",
+                "description": "Document QA after file upload and status check",
+                "tags": [
+                    "files"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-api-key",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "query": {
+                                        "type": "string"
+                                    },
+                                    "temperature": {
+                                        "type": "number",
+                                        "example": 0.3
+                                    },
+                                    "file_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Email"
+                    }
+                }
+            }
+        },
+        "/v1/llm": {
+            "post": {
+                "summary": "Completion",
+                "description": "Completion",
+                "tags": [
+                    "models"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "query": {
+                                        "type": "string"
+                                    },
+                                    "temperature": {
+                                        "type": "number",
+                                        "example": 0.3
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": []
+}

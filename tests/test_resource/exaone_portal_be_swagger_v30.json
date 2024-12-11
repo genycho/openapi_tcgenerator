@@ -1,0 +1,5137 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "square-portal-be v1",
+        "description": "square-portal을 위한 backend",
+        "contact": {
+            "name": "LG AIResearch - AI Platform",
+            "email": "chanwoo.moon@lgresearch.ai"
+        },
+        "version": "1.0.0"
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "in": "hearder",
+                "name": "Authorization",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/admin/accounts/getUserList": {
+            "get": {
+                "summary": "all user list",
+                "description": "user 리스트. ex.sortby) id, email, name, autholity(접근권한), updatedAt(마지막로그인) ex.orderby) asc, desc",
+                "tags": [
+                    "accounts"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "asc"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "lgresearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string"
+                                    },
+                                    "authority": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    },
+                                    "permission": {
+                                        "type": "array"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unknown error"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/changeAuthority": {
+            "post": {
+                "summary": "권한 변경",
+                "description": "권한 변경",
+                "tags": [
+                    "accounts"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "authority": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/CheckPermission": {
+            "post": {
+                "summary": "접속 서비스 권한 변경",
+                "description": "접속 서비스 권한  변경",
+                "tags": [
+                    "accounts"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "userId": {
+                                        "type": "number"
+                                    },
+                                    "lists": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "value": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/getDeletedList": {
+            "get": {
+                "summary": "get deleted_accounts",
+                "description": "get deleted_accounts",
+                "tags": [
+                    "accounts"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "asc"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "lgresearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/restoreIds": {
+            "post": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "accounts 복구",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/permanentDelete": {
+            "post": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "remove accounts (완전 삭제용)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/deleteAccounts": {
+            "post": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "remove accounts (admin권한으로 삭제)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/deletereason": {
+            "post": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "remove reason (삭제이유 삭제)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reason": {
+                                        "type": "string"
+                                    },
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/accounts/changeReason": {
+            "post": {
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "remove reason (삭제이유 삭제)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reason": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/discussion/getDeletedList": {
+            "get": {
+                "summary": "discussion (deleted temp)",
+                "description": "discussion (deleted temp)",
+                "tags": [
+                    "admin"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pageInt",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/discussion/restoreIds": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "discussion 복구",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/discussion/permanentDelete": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "remove discussion (완전 삭제용)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/discussion/deleteDiscussion": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "remove discussion (admin권한으로 삭제)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/post/register": {
+            "post": {
+                "summary": "post 등록",
+                "description": "post 등록",
+                "tags": [
+                    "post"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "organization": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "thumbnailImg": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/admin/post/getAllList": {
+            "get": {
+                "summary": "all post list",
+                "description": "post 리스트",
+                "tags": [
+                    "post"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/post/{id}": {
+            "get": {
+                "summary": "id 정보",
+                "description": "id 정보",
+                "tags": [
+                    "post"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/post/update": {
+            "post": {
+                "summary": "post 수정",
+                "description": "post 수정",
+                "tags": [
+                    "post"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "organization": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "thumbnailImg": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update success."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/admin/post/like": {
+            "post": {
+                "summary": "like post",
+                "description": "post 좋아요",
+                "tags": [
+                    "post"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/post/unlike": {
+            "post": {
+                "summary": "unlike post",
+                "description": "post 좋아요 취소",
+                "tags": [
+                    "post"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/post/delete": {
+            "post": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "remove post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/service/policyList": {
+            "get": {
+                "summary": "(deprecated) 전체 버전 리스트",
+                "description": "전체 버전 리스트",
+                "tags": [
+                    "deprecated"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/service/termsList": {
+            "get": {
+                "summary": "(deprecated) 전체 버전 리스트",
+                "description": "전체 버전 리스트",
+                "tags": [
+                    "deprecated"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/service/deleteTerms": {
+            "post": {
+                "summary": "(deprecated) remove terms",
+                "description": "remove terms",
+                "tags": [
+                    "deprecated"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/service/termsRegister": {
+            "post": {
+                "summary": "(deprecated) 이용약관 등록",
+                "description": "이용약관",
+                "tags": [
+                    "deprecated"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "version": {
+                                        "type": "string"
+                                    },
+                                    "visible": {
+                                        "type": "boolean"
+                                    },
+                                    "subContent": {
+                                        "type": "string"
+                                    },
+                                    "validdate": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/admin/service/deletePolicy": {
+            "post": {
+                "tags": [
+                    "deprecated"
+                ],
+                "summary": "(deprecated) remove policy",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/service/PolicyRegister": {
+            "post": {
+                "summary": "(deprecated) 이용약관 등록",
+                "description": "이용약관",
+                "tags": [
+                    "deprecated"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "version": {
+                                        "type": "string"
+                                    },
+                                    "visible": {
+                                        "type": "boolean"
+                                    },
+                                    "validdate": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/admin/service/NoticeRegister": {
+            "post": {
+                "summary": "공지사항 등록",
+                "description": "공지사항 등록",
+                "tags": [
+                    "admin"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "filename": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/admin/service/NoticeUpdate": {
+            "post": {
+                "summary": "공지사항 수정",
+                "description": "공지사항 수정",
+                "tags": [
+                    "admin"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "filename": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update success."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/admin/service/noticeDelete": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "summary": "remove notice",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/admin/service/policy/update": {
+            "post": {
+                "summary": "(deprecated) policy 수정",
+                "description": "policy 수정",
+                "tags": [
+                    "deprecated"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "version": {
+                                        "type": "string"
+                                    },
+                                    "validdate": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update success."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/admin/service/terms/update": {
+            "post": {
+                "summary": "(deprecated) terms 수정",
+                "description": "terms 수정",
+                "tags": [
+                    "deprecated"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "version": {
+                                        "type": "string"
+                                    },
+                                    "validdate": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "subOption": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update success."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/auth/check-email": {
+            "post": {
+                "summary": "이메일 중복과 허용도메인 여부를 체크",
+                "description": "이메일 중복과 허용도메인 여부를 체크",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "isDuplicated": {
+                                    "type": "boolean"
+                                },
+                                "domainFound": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Email"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "summary": "(deprecated) user login",
+                "description": "user login",
+                "tags": [
+                    "deprecated"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "login successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "login successfully",
+                                        "accessToken": "JWT",
+                                        "refreshToken": "JWT"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "422": {
+                        "description": "error message of DB"
+                    },
+                    "424": {
+                        "description": "You need to verify your inbox!"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "summary": "(deprecated)(headers-Authorization) user logout",
+                "description": "user logout",
+                "tags": [
+                    "deprecated"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "logout successfully"
+                    }
+                }
+            }
+        },
+        "/auth/hashedpw": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "pw",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/authv2/register": {
+            "post": {
+                "summary": "user 등록",
+                "description": "(redis) user 등록. 승인 토큰이 있는 메일을 전송",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string"
+                                    },
+                                    "agreement": {
+                                        "type": "object",
+                                        "example": {
+                                            "termsofuse": "1.3",
+                                            "privacepolicy": "1.3",
+                                            "personalinformationagreement": "1.0",
+                                            "seminar": "yes"
+                                        }
+                                    },
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "tag": {
+                                        "type": "array",
+                                        "example": [
+                                            "work1",
+                                            "work2",
+                                            "work3"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/authv2/activate": {
+            "post": {
+                "summary": "user 계정 활성화",
+                "description": "(redis) user 계정 활성화",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User has been activated"
+                    },
+                    "409": {
+                        "description": "User is already activated"
+                    },
+                    "422": {
+                        "description": "User in jwt is not existed"
+                    }
+                }
+            }
+        },
+        "/authv2/deactivate": {
+            "post": {
+                "summary": "user 계정 비활성화(soft_delete)",
+                "description": "user 계정 비활성화(soft_delete)",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "User is already activated"
+                    },
+                    "422": {
+                        "description": "User in jwt is not existed"
+                    }
+                }
+            }
+        },
+        "/authv2/resend-verification": {
+            "post": {
+                "summary": "승인 토큰 재전송",
+                "description": "(redis) 승인 토큰이 담긴 메일을 재전송",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Verification mail has been sent to your inbox."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "403": {
+                        "description": "Registration has already been completed."
+                    },
+                    "404": {
+                        "description": "Not registered."
+                    }
+                }
+            }
+        },
+        "/authv2/forgot-password": {
+            "post": {
+                "summary": "비밀번호 초기화 요청",
+                "description": "(redis) 비밀번호 초기화를 요청하고 reset 하기 위한 token을 받아옴",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset link  has been sent to your inbox."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "Registration was not completed."
+                    }
+                }
+            }
+        },
+        "/authv2/reset-password": {
+            "post": {
+                "summary": "비밀번호 초기화",
+                "description": "(redis) token을 통해 비밀번호를 초기화",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User password successfully has been updated"
+                    },
+                    "400": {
+                        "description": "Unknown error"
+                    },
+                    "403": {
+                        "description": "Token expired or Email is not exists"
+                    },
+                    "422": {
+                        "description": "The password is not allowed format || The new password cannot be the same as your current password or etc."
+                    }
+                }
+            }
+        },
+        "/authv2/login": {
+            "post": {
+                "summary": "user login",
+                "description": "(redis) user login",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "service": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "login successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "email",
+                                        "message": "login successfully",
+                                        "accessToken": "JWT",
+                                        "refreshToken": "JWT",
+                                        "redirect": "https://..."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "422": {
+                        "description": "error message of DB"
+                    },
+                    "424": {
+                        "description": "You need to verify your inbox!"
+                    }
+                }
+            }
+        },
+        "/authv2/logout": {
+            "post": {
+                "summary": "(headers-Authorization) user logout",
+                "description": "(redis) user logout",
+                "tags": [
+                    "authv2"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "logout successfully"
+                    }
+                }
+            }
+        },
+        "/authv2/agreement": {
+            "put": {
+                "summary": "(headers-Authorization) set(update or create) agreements",
+                "description": "set(update or create) agreements",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "agreement": {
+                                        "type": "object",
+                                        "example": {
+                                            "termsofuse": "1.3",
+                                            "privacepolicy": "1.3",
+                                            "personalinformationagreement": "1.0",
+                                            "seminar": "yes"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            },
+            "get": {
+                "summary": "(headers-Authorization) read agreements",
+                "description": "read agreements",
+                "tags": [
+                    "authv2"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/authv2/iscodevalid": {
+            "get": {
+                "summary": "check 6-digits code validation",
+                "description": "(redis) check 6-digits code validation",
+                "tags": [
+                    "authv2"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "email",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "code",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "internal server error"
+                    },
+                    "422": {
+                        "description": "unprocessable entity"
+                    }
+                }
+            }
+        },
+        "/authv2/istemptokenvalid": {
+            "get": {
+                "summary": "check tempToken validation",
+                "description": "(redis) check tempToken validation",
+                "tags": [
+                    "authv2"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "tempToken",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "ipAddress",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "email",
+                                        "role": "role",
+                                        "tag": [
+                                            "tag"
+                                        ],
+                                        "accessToken": "JWT",
+                                        "refreshToken": "JWT"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "internal server error"
+                    },
+                    "401": {
+                        "description": "not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Check your email!"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "unprocessable entity"
+                    }
+                }
+            }
+        },
+        "/authv2/istokenvalid": {
+            "get": {
+                "summary": "(deprecated) check tempToken validation",
+                "description": "check tempToken validation",
+                "tags": [
+                    "deprecated"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "service",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "tempToken",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "email",
+                                        "accessToken": "JWT",
+                                        "refreshToken": "JWT"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "internal server error"
+                    },
+                    "401": {
+                        "description": "not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Check your email!"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "unprocessable entity"
+                    }
+                }
+            }
+        },
+        "/authv2/whoami": {
+            "get": {
+                "summary": "(headers-Authorization) get user_info",
+                "description": "get user_info",
+                "tags": [
+                    "authv2"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "ipAddress",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "id": 1,
+                                        "name": "name",
+                                        "email": "email",
+                                        "phoneNumber": "+82-00000000000",
+                                        "authority": "authority",
+                                        "role": "role",
+                                        "tag": [
+                                            "tag"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "internal server error"
+                    },
+                    "401": {
+                        "description": "not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Check your email!"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "unprocessable entity"
+                    }
+                }
+            }
+        },
+        "/authv2/refresh": {
+            "get": {
+                "summary": "renew accessToken",
+                "description": "get user_info",
+                "tags": [
+                    "authv2"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "ipAddress",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "refreshToken",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "email",
+                                        "role": "role",
+                                        "tag": [
+                                            "tag"
+                                        ],
+                                        "accessToken": "JWT",
+                                        "refreshToken": "JWT"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "internal server error"
+                    },
+                    "401": {
+                        "description": "not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Check your email!"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "unprocessable entity"
+                    }
+                }
+            }
+        },
+        "/authv2/temptoken/": {
+            "get": {
+                "summary": "(deprecated)(headers-Authorization) get temptoken",
+                "description": "get temptoken",
+                "tags": [
+                    "deprecated"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료(headers > Location)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "temptoken": null
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "internal server error"
+                    },
+                    "401": {
+                        "description": "not verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Check your email!"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "unprocessable entity"
+                    }
+                }
+            }
+        },
+        "/authv2/users": {
+            "post": {
+                "summary": "add users by xlsx",
+                "description": "add users by xlsx",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "inputs": {
+                                        "type": "file"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete users by xlsx",
+                "description": "delete users by xlsx",
+                "tags": [
+                    "authv2"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "inputs": {
+                                        "type": "file"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/common/health": {
+            "get": {
+                "summary": "get health",
+                "description": "health check",
+                "tags": [
+                    "common"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "object",
+                                            "example": {
+                                                "code": "0000",
+                                                "message": "success"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/common/queueTest": {
+            "post": {
+                "summary": "queueTest",
+                "description": "queueTest",
+                "tags": [
+                    "common"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "object",
+                                            "example": {
+                                                "code": "0000",
+                                                "message": "success"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/definition": {
+            "post": {
+                "summary": "(admin) create definition",
+                "description": "create definition",
+                "tags": [
+                    "definition"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "order": {
+                                        "type": "number"
+                                    },
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Email"
+                    }
+                }
+            },
+            "get": {
+                "summary": "read definition list",
+                "description": "read definition list",
+                "tags": [
+                    "definition"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "key",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "role"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "definition": [
+                                            {
+                                                "id": 1,
+                                                "order": 0,
+                                                "value": "engineer"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Email"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "(admin) delete definition",
+                "description": "delete definition",
+                "tags": [
+                    "definition"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Email"
+                    }
+                }
+            }
+        },
+        "/definition/{id}": {
+            "put": {
+                "summary": "(admin) update definition",
+                "description": "update definition",
+                "tags": [
+                    "definition"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true,
+                        "description": "Numeric ID of the definition to get"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Email"
+                    }
+                }
+            }
+        },
+        "/discussion/search/content": {
+            "get": {
+                "summary": "discussion 검색",
+                "description": "discussion 검색",
+                "tags": [
+                    "discussion"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "filter",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": [
+                                "All",
+                                "인공지능 모델",
+                                "문의사항",
+                                "제안"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string",
+                            "example": [
+                                "popular",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageInt",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/discussion/register": {
+            "post": {
+                "summary": "discussion 등록",
+                "description": "discussion 등록",
+                "tags": [
+                    "discussion"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "filename": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/discussion/get/{id}": {
+            "get": {
+                "summary": "id 정보",
+                "description": "id 정보",
+                "tags": [
+                    "discussion"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/discussion/comment/register": {
+            "post": {
+                "summary": "discussion comment 등록",
+                "description": "discussion comment 등록",
+                "tags": [
+                    "discussion"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "discussionId": {
+                                        "type": "number"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/discussion/Reply/register": {
+            "post": {
+                "summary": "discussion 대댓글 등록",
+                "description": "discussion 대댓글 등록",
+                "tags": [
+                    "discussion"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "commentNumber": {
+                                        "type": "number"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Please check your email."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/discussion/update": {
+            "post": {
+                "summary": "discussion 수정",
+                "description": "discussion 수정",
+                "tags": [
+                    "discussion"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "type": "string"
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "filename": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update success."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "422": {
+                        "description": "User is already registered!"
+                    }
+                }
+            }
+        },
+        "/discussion/like": {
+            "post": {
+                "summary": "like discussion",
+                "description": "discussion 좋아요",
+                "tags": [
+                    "discussion"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/discussion/unlike": {
+            "post": {
+                "summary": "unlike discussion",
+                "description": "discussion 좋아요 취소",
+                "tags": [
+                    "discussion"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/discussion/comment/{id}": {
+            "delete": {
+                "tags": [
+                    "discussion"
+                ],
+                "summary": "remove discussion Comment",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "number",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/discussion/commentreply/{id}": {
+            "delete": {
+                "tags": [
+                    "discussion"
+                ],
+                "summary": "remove discussion Commentreply",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "number",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/discussion/{id}": {
+            "delete": {
+                "tags": [
+                    "discussion"
+                ],
+                "summary": "remove discussion",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "number",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/each-service/users": {
+            "get": {
+                "summary": "(headers-Authorization) get user list",
+                "description": "사용자가 로그인한 서비스의 user 리스트<br> e.g.)<br> sortby - id, name, email<br> orderby - asc, desc<br> searchby - name, email, phonenumber, regex_email<br>.      e.g.) ^(?=.*chan)(?=.+@lgresearch\\.ai$)",
+                "tags": [
+                    "each-service"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "asc"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "searchby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "lgresearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "count": 1,
+                                        "rows": [
+                                            {
+                                                "id": 1,
+                                                "name": "brown",
+                                                "email": "brown@lgresearch.ai",
+                                                "phoneNumber": "+82-01011112222",
+                                                "userFeature": [
+                                                    {
+                                                        "role": "admin",
+                                                        "tag": [
+                                                            "edu"
+                                                        ]
+                                                    }
+                                                ],
+                                                "permission": [
+                                                    {
+                                                        "permission_step": "available"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unknown error"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/each-service/filemanager/users": {
+            "get": {
+                "summary": "(headers-Authorization) get user list for filemanager",
+                "description": "filemanager 전용 서비스. chatexaone 권한이 있는 user 리스트<br> e.g.)<br> sortby - id, name, email<br> orderby - asc, desc<br> searchby - name, email, phonenumber, regex_email<br>.      e.g.) ^(?=.*chan)(?=.+@lgresearch\\.ai$)",
+                "tags": [
+                    "each-service"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "asc"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "searchby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "lgresearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "count": 1,
+                                        "rows": [
+                                            {
+                                                "id": 1,
+                                                "name": "brown",
+                                                "email": "brown@lgresearch.ai",
+                                                "phoneNumber": "+82-01011112222",
+                                                "userFeature": [
+                                                    {
+                                                        "role": "admin",
+                                                        "tag": [
+                                                            "edu"
+                                                        ]
+                                                    }
+                                                ],
+                                                "permission": [
+                                                    {
+                                                        "permission_step": "available"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unknown error"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/each-service/filemanager/{id}/permission": {
+            "post": {
+                "summary": "(headers-Authorization) set filemanager permission for filemanager",
+                "description": "set filemanager permission for filemanager",
+                "tags": [
+                    "each-service"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": "lgresearch"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "permission_step": {
+                                        "type": "string",
+                                        "example": "available"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/gcs/SignedUrl": {
+            "post": {
+                "summary": "generate presigned URL from gcs.",
+                "description": "molecule 생성. title은 중복을 허용",
+                "tags": [
+                    "gcs"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "filename": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not stored at S3"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "500": {
+                        "description": "Internal server error, Internal S3 error"
+                    }
+                }
+            }
+        },
+        "/gcs/test": {
+            "post": {
+                "summary": "generate presigned URL from gcs.",
+                "description": "molecule 생성. title은 중복을 허용",
+                "tags": [
+                    "gcs"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not stored at S3"
+                    },
+                    "401": {
+                        "description": "Unauthorize"
+                    },
+                    "500": {
+                        "description": "Internal server error, Internal S3 error"
+                    }
+                }
+            }
+        },
+        "/mailing/create": {
+            "post": {
+                "summary": "(admin) 메일을 보내는 서비스",
+                "description": "서비스에 동의한 계정을 대상으로 메일을 송부",
+                "tags": [
+                    "mailing"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "purpose": {
+                                        "type": "string",
+                                        "example": "test"
+                                    },
+                                    "ccaddress": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "subject"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "body"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/mailing/list": {
+            "get": {
+                "summary": "(admin) 보낸 메일 목록",
+                "description": "보낸 메일 목록. ex.sortby) id, createdAt(등록일) ex.orderby) asc, desc",
+                "tags": [
+                    "mailing"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "category",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "all"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "id"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "asc"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "counts": 1,
+                                        "rows": [
+                                            {
+                                                "id": 1,
+                                                "purpose": "seminar",
+                                                "subject": "subject",
+                                                "createdAt": "2024-05-12T09:27:35.000Z",
+                                                "user": {
+                                                    "email": "pluto@lgresearch.ai",
+                                                    "name": "pluto"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "비정상 종료"
+                    }
+                }
+            }
+        },
+        "/mailing/{id}": {
+            "get": {
+                "summary": "(admin) 보낸 메일 상세 정보",
+                "description": "보낸 메일 상세 정보",
+                "tags": [
+                    "mailing"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "id": 2,
+                                        "purpose": "seminar",
+                                        "fromAddress": [],
+                                        "toAddress": [],
+                                        "ccAddress": [
+                                            "admin@lgresearch.ai"
+                                        ],
+                                        "bccAddress": [
+                                            "exaone@lgresearch.ai"
+                                        ],
+                                        "subject": "subject",
+                                        "body": "body",
+                                        "total": 134,
+                                        "sending": 134,
+                                        "createdAt": "2024-05-12T09:27:35.000Z",
+                                        "user": {
+                                            "email": "pluto@lgresearch.ai",
+                                            "name": "pluto"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid ID"
+                    }
+                }
+            }
+        },
+        "/mailing/delete": {
+            "delete": {
+                "summary": "(admin) 보낸 메일 목록 삭제",
+                "description": "보낸 메일 목록 삭제",
+                "tags": [
+                    "mailing"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mypage/passwordCheck": {
+            "post": {
+                "summary": "password check",
+                "description": "password check",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "check successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "check successfully"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "422": {
+                        "description": "error message of DB"
+                    },
+                    "424": {
+                        "description": "You need to verify your inbox!"
+                    }
+                }
+            }
+        },
+        "/mypage/passwordupdate": {
+            "post": {
+                "summary": "password check",
+                "description": "password check",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "newpassword": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "check successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "check successfully"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "현재 비밀번호 형식이 맞지 않습니다"
+                    },
+                    "403": {
+                        "description": "새 비밀번호 형식이 맞지 않습니다."
+                    },
+                    "404": {
+                        "description": "현재 비밀번호 입력이 맞지 않습니다."
+                    },
+                    "417": {
+                        "description": "현재 비밀번호와 새 비밀번호가 같습니다."
+                    }
+                }
+            }
+        },
+        "/mypage/AddBookmark": {
+            "post": {
+                "summary": "북마크 등록",
+                "description": "북마크 등록",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "bookmarkNum": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Adding bookmark has been updated!"
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "401": {
+                        "description": "token expired"
+                    },
+                    "422": {
+                        "description": "User is not exists!"
+                    }
+                }
+            }
+        },
+        "/mypage/deleteBookmark": {
+            "post": {
+                "summary": "북마크 삭제",
+                "description": "북마크 삭제",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "bookmarkNum": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Adding bookmark has been updated!"
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "401": {
+                        "description": "token expired"
+                    },
+                    "422": {
+                        "description": "User is not exists!"
+                    }
+                }
+            }
+        },
+        "/mypage/BookmarkList": {
+            "get": {
+                "summary": "개인 북마크 리스트",
+                "description": "개인 북마크 리스트",
+                "tags": [
+                    "mypage"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mypage/profileChange": {
+            "post": {
+                "summary": "프로필 정보 변경",
+                "description": "프로필 정보 변경",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User password successfully has been updated!"
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    },
+                    "401": {
+                        "description": "token expired"
+                    },
+                    "422": {
+                        "description": "User is not exists!"
+                    }
+                }
+            }
+        },
+        "/mypage/feature": {
+            "post": {
+                "summary": "(headers-Authorization) set user feature",
+                "description": "set user role",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "tag": {
+                                        "type": "array",
+                                        "example": [
+                                            "edu",
+                                            "studying",
+                                            "work"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unknown error"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            },
+            "get": {
+                "summary": "(headers-Authorization) get user feature",
+                "description": "get user role",
+                "tags": [
+                    "mypage"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "role": "role",
+                                        "tag": [
+                                            "tag"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unknown error"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/mypage/roleandwork": {
+            "post": {
+                "summary": "(headers-Authorization) set user role & work",
+                "description": "set user role & work",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "tag": {
+                                        "type": "array",
+                                        "example": [
+                                            "work1",
+                                            "work2",
+                                            "work3"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unknown error"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/mypage/language": {
+            "post": {
+                "summary": "(headers-Authorization) set user language",
+                "description": "set user language",
+                "tags": [
+                    "mypage"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "language": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "unknown error"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/notification/my": {
+            "get": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "유저 알림 정보 조회",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "알림 생성 시간 내림차순 기준 시작 인덱스, null 경우 0 으로 검색함."
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "가져올 알림 정보 개수, 최대 30개이며, null 인경우 최대 개수만큼 전달함."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "minItems": 0,
+                            "maxItems": 30,
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "userId": {
+                                        "type": "number"
+                                    },
+                                    "profileImageUrl": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "number"
+                                    },
+                                    "parameter": {
+                                        "type": "object"
+                                    },
+                                    "isChecked": {
+                                        "type": "boolean"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/notification/{id}": {
+            "delete": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "remove notification",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "number",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/notification/checkUpdate/{id}": {
+            "post": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "notification check update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "number",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/notification/myPersonalNoti": {
+            "get": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "notification private Info",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string",
+                            "example": [
+                                "all",
+                                "read",
+                                "no read"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageInt",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/notification/publicNoti": {
+            "get": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "notification (announce notice) Info",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string",
+                            "example": [
+                                "all",
+                                "read",
+                                "no read"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageInt",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/notification/sendNotification": {
+            "post": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "notification send to public BY API (ONLY)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unautorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/service/create": {
+            "post": {
+                "summary": "(admin) 서비스 추가",
+                "description": "서비스 추가",
+                "tags": [
+                    "service"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    },
+                                    "tag": {
+                                        "type": "array",
+                                        "example": [
+                                            "edu",
+                                            "studying",
+                                            "work"
+                                        ]
+                                    },
+                                    "permission": {
+                                        "type": "string"
+                                    },
+                                    "order": {
+                                        "type": "number"
+                                    },
+                                    "disabled": {
+                                        "type": "number"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    },
+                                    "documentUrl": {
+                                        "type": "string"
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/service/list": {
+            "get": {
+                "summary": "전체 서비스 리스트",
+                "description": "전체 서비스 리스트. ex.sortby) id, order, createdAt(등록일) ex.orderby) asc, desc",
+                "tags": [
+                    "service"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "category",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "all"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "id"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "asc"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료"
+                    },
+                    "400": {
+                        "description": "비정상 종료"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/service/permission": {
+            "get": {
+                "summary": "get service list with permission",
+                "description": "(redis) get service list with permission",
+                "tags": [
+                    "service"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "category",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "all"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "user": 1,
+                                        "counts": 1,
+                                        "rows": [
+                                            {
+                                                "id": 1,
+                                                "title": "ddu",
+                                                "description": "string",
+                                                "thumbnailImg": "https://....",
+                                                "taglist": [
+                                                    "Vision lab",
+                                                    "DI lab"
+                                                ],
+                                                "order": 0,
+                                                "apiPath": "https://....",
+                                                "code": "ddu",
+                                                "permission_step": "Available"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/service/{id}": {
+            "get": {
+                "summary": "(admin) 서비스 정보",
+                "description": "서비스 정보",
+                "tags": [
+                    "service"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료"
+                    }
+                }
+            }
+        },
+        "/service/update": {
+            "put": {
+                "summary": "(admin) 서비스 수정",
+                "description": "서비스 수정",
+                "tags": [
+                    "service"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string"
+                                    },
+                                    "tag": {
+                                        "type": "array",
+                                        "example": [
+                                            "edu",
+                                            "studying",
+                                            "work"
+                                        ]
+                                    },
+                                    "permission": {
+                                        "type": "string"
+                                    },
+                                    "order": {
+                                        "type": "number"
+                                    },
+                                    "disabled": {
+                                        "type": "number"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    },
+                                    "documentUrl": {
+                                        "type": "string"
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/service/delete": {
+            "delete": {
+                "summary": "(admin) 서비스 삭제",
+                "description": "서비스 삭제",
+                "tags": [
+                    "service"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/terms/create": {
+            "post": {
+                "summary": "(admin) terms 추가",
+                "description": "terms 추가",
+                "tags": [
+                    "terms"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "example": "termsofuse"
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "example": "v1.0"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "content"
+                                    },
+                                    "issuedAt": {
+                                        "type": "string",
+                                        "example": "2024.05.05"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/terms/list": {
+            "get": {
+                "summary": "전체 terms 리스트",
+                "description": "전체 terms 리스트. ex.sortby) id, createdAt(등록일) ex.orderby) asc, desc",
+                "tags": [
+                    "terms"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 30
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "category",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "all"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "id"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "orderby",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "asc"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료"
+                    },
+                    "400": {
+                        "description": "비정상 종료"
+                    },
+                    "422": {
+                        "description": "Invalid credentials!"
+                    }
+                }
+            }
+        },
+        "/terms/{id}": {
+            "get": {
+                "summary": "terms 정보",
+                "description": "terms 정보",
+                "tags": [
+                    "terms"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료"
+                    }
+                }
+            }
+        },
+        "/terms/update": {
+            "put": {
+                "summary": "(admin) terms 수정",
+                "description": "terms 수정",
+                "tags": [
+                    "terms"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 1
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "example": "termsofuse"
+                                    },
+                                    "version": {
+                                        "type": "string",
+                                        "example": "v1.0"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "content"
+                                    },
+                                    "issuedAt": {
+                                        "type": "string",
+                                        "example": "2024.05.05"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/terms/delete": {
+            "delete": {
+                "summary": "(admin) terms 삭제",
+                "description": "terms 삭제",
+                "tags": [
+                    "terms"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "success"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/web/termsList/{id}": {
+            "get": {
+                "summary": "(deprecated) 버전 정보",
+                "description": "버전 정보",
+                "tags": [
+                    "deprecated"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "number",
+                        "default": 0
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/web/termsList": {
+            "get": {
+                "summary": "(deprecated) 전체 버전 리스트",
+                "description": "전체 버전 리스트",
+                "tags": [
+                    "deprecated"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/web/policyList/{id}": {
+            "get": {
+                "summary": "(deprecated) 버전 정보",
+                "description": "버전 정보",
+                "tags": [
+                    "deprecated"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "number",
+                        "default": 0
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/web/policyverisionList": {
+            "get": {
+                "summary": "(deprecated) 전체 버전 리스트",
+                "description": "전체 버전 리스트",
+                "tags": [
+                    "deprecated"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/web/noticeAlllist": {
+            "get": {
+                "summary": "전체 공지 리스트",
+                "description": "전체 공지 리스트",
+                "tags": [
+                    "web"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "filter",
+                        "schema": {
+                            "type": "string",
+                            "example": [
+                                "All",
+                                "시스템",
+                                "서비스",
+                                "공지"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageInt",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/web/notice/{id}": {
+            "get": {
+                "summary": "id 정보",
+                "description": "id 정보",
+                "tags": [
+                    "web"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "number",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "정상 종료",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "name": "name",
+                                        "email": "id@lg.com",
+                                        "phoneNumber": "000-0000-0000",
+                                        "isAdmin": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [],
+    "servers": [
+        {
+            "url": "https://www.lgair.net/portal/api/_",
+            "description": "dev server"
+        }
+    ]
+}
