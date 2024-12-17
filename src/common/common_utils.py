@@ -6,7 +6,27 @@ import uuid
 import datetime
 from datetime import datetime as dt
 import requests
+from common.exceptions import QEToolException
+# from model.api_info import ApiInfo
+# from model.api_info import InputParameterInfo
+import logging
+from common.log_config import setup_logging
 
+logger = logging.getLogger()
+setup_logging()
+logger = logging.getLogger(__name__)
+
+def get_spec_schema_version(swagger_json_path)->str:
+    with open(swagger_json_path, 'r',encoding='utf8') as json_file:
+        all_api_info = json.load(json_file)
+    if "swagger" in all_api_info and "2.0" == all_api_info.get('swagger'):
+        logger.info("swagger appeared. 2.0")
+        return "2.0"
+    elif "openapi" in all_api_info:
+        detail_spec_version = all_api_info["openapi"]
+        logger.info(f"openapi appeared. 3.0 and {detail_spec_version}")
+        return "3.0"
+    
 ########### COMMON ###########
 def get_uuid():
     return str(uuid.uuid4())
