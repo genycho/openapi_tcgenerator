@@ -34,7 +34,7 @@ class ApiInfo:
     tag = []
     input_content_type = ""   #필수 #input content types
     output_content_type = ""   #output content types
-    parameters = [] 
+    parameters : list[InputParameterInfo]=[] 
     requestBody = {}
     #  파일인 경우, 
     # "requestBody": {

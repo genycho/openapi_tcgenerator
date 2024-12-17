@@ -20,12 +20,27 @@ class ApiTCInfo(ApiInfo):
     jsonbody_str:str    #post,put 등에서 json 요청 바디를 표시하는 문자열입니다
     assert_str_list:str #테스트 assertion 을 출력하는데 사용되는 리스트입니다
 
-    def set_apiinfo(self, api_info:ApiInfo):
-        self.name = api_info.method+"_"+api_info.name
-        self.base_url = api_info.base_url
-        self.operation_id = api_info.operation_id
-        self.path = api_info.path
-        self.method = api_info.method
-        self.description = api_info.description
-        self.summary = api_info.summary
-
+    def __init__(self, api_info=None):
+        self.project_str = ""
+        self.testfile_declaration = ""
+        self.test_pytestmarker_str = ""
+        self.test_declartion_str = ""
+        self.test_declartion_str = ""
+        self.testmethod_declaration = ""
+        self.header_str = ""
+        self.path_params_set_str = ""
+        self.path_params_str = ""
+        self.query_params_str = ""
+        self.formparms_str = ""
+        self.multipart_file_str = ""
+        self.request_str = ""
+        self.jsonbody_str = ""
+        self.assert_str_list = ""
+        if api_info != None:
+            self.name = api_info.method+"_"+api_info.name
+            self.base_url = api_info.base_url
+            self.operation_id = api_info.operation_id
+            self.path = api_info.path
+            self.method = api_info.method
+            self.description = api_info.description
+            self.summary = api_info.summary
