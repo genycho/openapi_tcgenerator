@@ -1,12 +1,13 @@
-import collections
-from api_info import ApiInfo
+import os,sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from model.api_info import ApiInfo
 
 class ApiTCInfo(ApiInfo):
     project_str:str #관련 라이브러리 import에서 쓰이는 문자열입니다
-    testfile_declaration:str    #테스트 파일 상단 주석 설명에 사용됩니다
+    testfile_description_comment:str    #테스트 파일 상단 주석 설명에 사용됩니다
     test_pytestmarker_str:str #각 테스트함수 위에 pytest.mark ~ 문장을 생성합니다
-    test_declartion_str:str #각 테스트함수 이름을 정의하는 문장입니다
-    testmethod_declaration:str  #각 테스트 함수(케이스) 주석 설명에 사용됩니다
+    testmethod_declaration_str:str #각 테스트함수 이름을 정의하는 문장입니다
+    testmethod_description_comment:str  #각 테스트 함수(케이스) 주석 설명에 사용됩니다
     header_str:str  #테스트 상단 헤더 content-type 등 설정에 사용되는 라인입니다
 
     path_params_set_str:str #상단 path parameter를 세팅하는 라인입니다
@@ -22,11 +23,10 @@ class ApiTCInfo(ApiInfo):
 
     def __init__(self, api_info=None):
         self.project_str = ""
-        self.testfile_declaration = ""
+        self.testfile_description_comment = ""
         self.test_pytestmarker_str = ""
-        self.test_declartion_str = ""
-        self.test_declartion_str = ""
-        self.testmethod_declaration = ""
+        self.testmethod_declaration_str = ""
+        self.testmethod_description_comment = ""
         self.header_str = ""
         self.path_params_set_str = ""
         self.path_params_str = ""
@@ -44,3 +44,12 @@ class ApiTCInfo(ApiInfo):
             self.method = api_info.method
             self.description = api_info.description
             self.summary = api_info.summary
+            self.responses = api_info.responses
+            self.requestBody = api_info.requestBody
+            self.base_path = api_info.base_path
+            self.input_content_type = api_info.input_content_type
+            self.output_content_type = api_info.output_content_type
+            self.parameters = api_info.parameters
+            self.tag = api_info.tag
+            self.project_title = api_info.project_title
+            self.security = api_info.security
