@@ -12,8 +12,6 @@ logger = logging.getLogger()
 setup_logging()
 logger = logging.getLogger(__name__)
 
-
-
 class SwaggerParser20():
     """
     """

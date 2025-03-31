@@ -22,6 +22,8 @@ class InputParameterInfo:
 
 
 class ApiInfo:
+    CONTENTTYPE_JSON = "application/json"
+    CONTENTTYPE_MULTIPART = "multipart/form-data"
     project_title = ""  # 필수
     base_url = ""   # 필수
     base_path = ""
@@ -32,7 +34,8 @@ class ApiInfo:
     path = ""   # 필수
     method = "" # 필수
     tag = []
-    input_content_type = ""   #필수 #input content types
+    """ application/json, multipart/form-data"""
+    input_content_type = ""   #필수 
     output_content_type = ""   #output content types
     parameters : list[InputParameterInfo]=[] 
     requestBody = {}

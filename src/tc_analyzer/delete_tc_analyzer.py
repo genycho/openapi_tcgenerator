@@ -19,7 +19,7 @@ class DeleteTypeTCAnalyzer(BasicTCAnalyzer):
     """
     DELETE Method, 
     """
-    def get_tclist(self,api_info:ApiInfo):
+    def analyze_testcases(self,api_info:ApiInfo):
         """
         """
         tc_list = []

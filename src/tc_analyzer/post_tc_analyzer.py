@@ -194,6 +194,9 @@ class PostJsonBodyTypeTCAnalyzer(BasicTCAnalyzer):
         return tc_info
 
 class PostMultipartTypeTCAnalyzer(BasicTCAnalyzer):
+    def analyze_testcases(self,api_info:ApiInfo):
+        return None
+    
     def get_tclist(self,api_info:ApiInfo):
         # 0) (A)json 바디 타입 vs (B)multipart-formdata 분기
         # B-1) basic 수행, 파일 첨부. form-param 이 있는지 없는지. 
@@ -223,9 +226,6 @@ class PostMultipartTypeTCAnalyzer(BasicTCAnalyzer):
                 elif "file" == a_param['type']:
                     self.multipart_file_str =f'test_file_path = get_dirpath + "/{api_info.project_title}/test_resource/sample_file.jpg"\n    files= {{\n        "{a_param['name']}": ("sample_file.jpg", open(test_file_path, "rb"),"image/jpeg")\n    }}'
         self.formparams_str += "    }"
-
-
-
 
 
         
